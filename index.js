@@ -1,6 +1,5 @@
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
-// let bottom = y + 100; // bottom of the player
 
 // Getting 16/9 ratio
 canvas.width = 1024;
