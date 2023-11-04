@@ -16,7 +16,9 @@ const backgroundLevel1 = new Sprite({
   imageSrc: "./Assets/img/backgroundLevel1.png",
 });
 
-const player = new Player();
+const player = new Player({
+  collisionBlocks,
+});
 
 const keys = {
   z: {
