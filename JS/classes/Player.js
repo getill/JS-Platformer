@@ -1,6 +1,7 @@
 // ------ Player creator ------
-class Player {
-  constructor({ collisionBlocks = [] }) {
+class Player extends Sprite {
+  constructor({ collisionBlocks = [], imageSrc, frameRate }) {
+    super({ imageSrc, frameRate });
     this.position = {
       x: 200,
       y: 200,
@@ -11,8 +12,6 @@ class Player {
       y: 0,
     };
 
-    this.width = 25;
-    this.height = 25;
     this.sides = {
       bottom: this.position.y + this.height,
     };
@@ -21,18 +20,37 @@ class Player {
     this.collisionBlocks = collisionBlocks;
   }
 
-  // Drawing the player on canvas
-  draw() {
-    c.fillStyle = "red";
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-  }
-
-  // Player stops when we reach the bottom
   update() {
+    // c.fillStyle = "rgba(0,0,255, 0.5";
+    // c.fillRect(this.position.x, this.position.y, this.width, this.height);
+
     this.position.x += this.velocity.x;
+
+    this.updateHitbox();
+
     this.checkForHorizontalCollisions();
     this.applyGravity();
+
+    this.updateHitbox();
+
+    // c.fillRect(
+    //   this.hitbox.position.x,
+    //   this.hitbox.position.y,
+    //   this.hitbox.width,
+    //   this.hitbox.height
+    // );
     this.checkForVerticalCollisions();
+  }
+
+  updateHitbox() {
+    this.hitbox = {
+      position: {
+        x: this.position.x + 58,
+        y: this.position.y + 34,
+      },
+      width: 50,
+      height: 53,
+    };
   }
 
   checkForHorizontalCollisions() {
@@ -41,20 +59,27 @@ class Player {
 
       // Lets see if the collision exists
       if (
-        this.position.x <= collisionBlock.position.x + collisionBlock.width &&
-        this.position.x + this.width >= collisionBlock.position.x &&
-        this.position.y + this.height >= collisionBlock.position.y &&
-        this.position.y <= collisionBlock.position.y + collisionBlock.height
+        this.hitbox.position.x <=
+          collisionBlock.position.x + collisionBlock.width &&
+        this.hitbox.position.x + this.hitbox.width >=
+          collisionBlock.position.x &&
+        this.hitbox.position.y + this.hitbox.height >=
+          collisionBlock.position.y &&
+        this.hitbox.position.y <=
+          collisionBlock.position.y + collisionBlock.height
       ) {
         // This is used to know if we are going to the left
         if (this.velocity.x < -0) {
+          const offset = this.hitbox.position.x - this.position.x;
           this.position.x =
-            collisionBlock.position.x + collisionBlock.width + 0.01;
+            collisionBlock.position.x + collisionBlock.width - offset + 0.01;
           break;
         }
         // This is used to know if we are going to the right
         if (this.velocity.x > 0) {
-          this.position.x = collisionBlock.position.x - this.width - 0.01;
+          const offset =
+            this.hitbox.position.x - this.position.x + this.hitbox.width;
+          this.position.x = collisionBlock.position.x - offset - 0.01;
           break;
         }
       }
@@ -73,22 +98,29 @@ class Player {
 
       // Lets see if the collision exists
       if (
-        this.position.x <= collisionBlock.position.x + collisionBlock.width &&
-        this.position.x + this.width >= collisionBlock.position.x &&
-        this.position.y + this.height >= collisionBlock.position.y &&
-        this.position.y <= collisionBlock.position.y + collisionBlock.height
+        this.hitbox.position.x <=
+          collisionBlock.position.x + collisionBlock.width &&
+        this.hitbox.position.x + this.hitbox.width >=
+          collisionBlock.position.x &&
+        this.hitbox.position.y + this.hitbox.height >=
+          collisionBlock.position.y &&
+        this.hitbox.position.y <=
+          collisionBlock.position.y + collisionBlock.height
       ) {
         // This is used to know if we are going to the left
         if (this.velocity.y < 0) {
           this.velocity.y = 0;
+          const offset = this.hitbox.position.y - this.position.y;
           this.position.y =
-            collisionBlock.position.y + collisionBlock.height + 0.01;
+            collisionBlock.position.y + collisionBlock.height - offset + 0.01;
           break;
         }
         // This is used to know if we are going to the right
         if (this.velocity.y > 0) {
           this.velocity.y = 0;
-          this.position.y = collisionBlock.position.y - this.height - 0.01;
+          const offset =
+            this.hitbox.position.y - this.position.y + this.hitbox.height;
+          this.position.y = collisionBlock.position.y - offset - 0.01;
           break;
         }
       }
