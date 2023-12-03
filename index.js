@@ -49,6 +49,7 @@ const player = new Player({
           onComplete: () => {
             level++;
 
+            // Return to level one after the last level
             if (level === 4) level = 1;
             levels[level].init();
             player.switchSprite("idleRight"); // Put the right sprite after entering doors
@@ -63,6 +64,7 @@ const player = new Player({
   },
 });
 
+// ------------------------------------- LEVELS -------------------------------------
 let level = 1;
 let levels = {
   1: {
@@ -199,7 +201,7 @@ function animate() {
 
   c.save();
   c.globalAlpha = overlay.opacity;
-  c.fillStyle = "black";
+  c.fillStyle = "rgb(63, 56, 81)";
   c.fillRect(0, 0, canvas.width, canvas.height);
   c.restore();
 }

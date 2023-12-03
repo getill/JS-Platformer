@@ -1,7 +1,9 @@
 window.addEventListener("keydown", (event) => {
   if (player.preventInput) return;
+
+  // We listen to every letters pressed then we play some stuff
   switch (event.key) {
-    // Jump
+    // Jump / Enter door
     case "z":
       for (let i = 0; i < doors.length; i++) {
         const door = doors[i];
@@ -38,6 +40,7 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+// Stop sprite when the keys are not pressed anymore
 window.addEventListener("keyup", (event) => {
   switch (event.key) {
     // Stop Moving left
